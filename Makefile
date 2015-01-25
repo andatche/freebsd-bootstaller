@@ -11,6 +11,7 @@ VERSION?=10.1-RELEASE
 WRKDIR?=${PWD}/tmp/${VERSION}-${ARCH}
 DSTDIR?=${WRKDIR}/dist
 BASE?=${DSTDIR}
+CFGDIR?=${PWD}/mfsbsd-conf
 
 workdir: ${WRKDIR} ${DSTDIR}
 ${WRKDIR}:
@@ -26,7 +27,7 @@ ${WRKDIR}/.download_done:
 
 build: download ${WRKDIR}/.build_done
 ${WRKDIR}/.build_done:
-	@make -C mfsbsd BASE=${BASE} WRKDIR=${WRKDIR} IMAGE=${PWD}/freebsd-bootstaller-${VERSION}-${ARCH}.img
+	@make -C mfsbsd BASE=${BASE} WRKDIR=${WRKDIR} CFGDIR=${CFGDIR} IMAGE=${PWD}/freebsd-bootstaller-${VERSION}-${ARCH}.img
 	@touch $@
 
 clean:
