@@ -12,6 +12,9 @@ WRKDIR?=${PWD}/tmp/${VERSION}-${ARCH}
 DSTDIR?=${WRKDIR}/dist
 BASE?=${DSTDIR}
 CFGDIR?=${PWD}/mfsbsd-conf
+PKG_STATIC?=/usr/local/sbin/pkg-static
+PACKAGESDIR?=${PWD}/mfsbsd-packages
+IMAGE=${PWD}/freebsd-bootstaller-${VERSION}-${ARCH}.img
 
 workdir: ${WRKDIR} ${DSTDIR}
 ${WRKDIR}:
@@ -27,10 +30,9 @@ ${WRKDIR}/.download_done:
 
 build: download ${WRKDIR}/.build_done
 ${WRKDIR}/.build_done:
-	@make -C mfsbsd BASE=${BASE} WRKDIR=${WRKDIR} CFGDIR=${CFGDIR} IMAGE=${PWD}/freebsd-bootstaller-${VERSION}-${ARCH}.img
+	@make -C mfsbsd BASE=${BASE} WRKDIR=${WRKDIR} PACKAGESDIR=${PACKAGESDIR} PKG_STATIC=${PKG_STATIC} CFGDIR=${CFGDIR} IMAGE=${IMAGE}
 	@touch $@
 
 clean:
-	@chflags -R noschg ${WRKDIR}
-	@rm -fr ${WRKDIR}
-	@make -C mfsbsd clean
+	@if [ -d ${WRKDIR} ]; then make -C mfsbsd clean WRKDIR=${WRKDIR}; rm -rf ${WRKDIR}; fi
+	@if [ -f ${IMAGE} ]; then rm ${IMAGE}; fi
