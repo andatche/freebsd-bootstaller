@@ -1,0 +1,3 @@
+[submodule "mfsbsd"]
+	path = mfsbsd
+	url = git@github.com:andatche/mfsbsd.git
