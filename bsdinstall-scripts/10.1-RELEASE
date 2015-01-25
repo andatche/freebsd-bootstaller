@@ -1,0 +1,21 @@
+export PARTITIONS="vtbd0 GPT { 256K freebsd-boot, 5G freebsd-ufs / }"
+export DISTRIBUTIONS="kernel.txz base.txz"
+export BSDINSTALL_DISTSITE="http://ftp.freebsd.org/pub/FreeBSD/releases/amd64/10.1-RELEASE"
+
+bsdinstall distfetch
+
+#!/bin/sh
+echo "ifconfig_vtnet0=\"DHCP\"" >> /etc/rc.conf
+echo "ifconfig_vtnet0_ipv6=\"inet6 accept_rtadv\"" >> /etc/rc.conf
+echo "sshd_enable=YES" >> /etc/rc.conf
+echo "cloudinit_enable=\"YES\"" >> /etc/rc.conf
+
+# Set Time Zone to UTC
+echo "==> Setting Time Zone to UTC"
+/bin/cp /usr/share/zoneinfo/UTC /etc/localtime
+/usr/bin/touch /etc/wall_cmos_clock
+/sbin/adjkerntz -a
+
+echo "==> Installing packages"
+env ASSUME_ALWAYS_YES=YES pkg update -f
+env ASSUME_ALWAYS_YES=YES pkg install -y vim-lite py27-cloud-init
