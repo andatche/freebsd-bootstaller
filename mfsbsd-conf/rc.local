@@ -17,6 +17,7 @@ EXTERNAL_VTY_STARTED=1
 mkdir /usr/freebsd-dist
 
 # Wait for network to come up, then grab user-data
+echo
 dialog --backtitle "FreeBSD Bootstaller" --infobox "Attempting to fetch user-data..." 3 36
 sleep 5
 fetch --timeout 30 http://169.254.169.254/latest/user-data/ -o /etc/installerconfig 2>&1 >/dev/null
